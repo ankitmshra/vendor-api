@@ -1,4 +1,5 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework import filters
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -44,6 +45,8 @@ class UpdateDataView(APIView):
 class ProductsListView(ListAPIView):
     serializer_class = ProductReadSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['product_number', 'short_description']  # Add fields to search
 
     def get_queryset(self):
         category_param = self.request.query_params.get('category', None)
@@ -60,7 +63,7 @@ class ProductsListView(ListAPIView):
         return products
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())  # Apply search filter
 
         # Paginate the queryset
         page = self.paginate_queryset(queryset)
