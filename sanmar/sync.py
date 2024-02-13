@@ -225,8 +225,8 @@ class Process_snmr_inventory():
     def handle(self):
         """Handle GET requests to start downloading, processing,
           and updating the model."""
-        #self.clean_directory(os.path.join('files', 'snmr'))
-        #self.prepare_products()
+        self.clean_directory(os.path.join('files', 'snmr'))
+        self.prepare_products()
         self.update_products(self.product_csv)
         self.update_inventory(self.product_csv)
         self.debug("Finished updating products and inventory and Pricing.")
