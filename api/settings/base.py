@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     'alphabroder',
+    'sanmar',
 ]
 
 MIDDLEWARE = [
@@ -169,3 +170,8 @@ AB_USER_PASSWORD = config("AB_USER_PASSWORD")
 AB_FTP_HOST = config("AB_FTP_HOST")
 AB_FTP_USER = config("AB_FTP_USER")
 AB_FTP_PASSWORD = config("AB_FTP_PASSWORD")
+
+# Sanmar Credentials
+SANMAR_FTP_HOST = config("SANMAR_FTP_HOST")
+SANMAR_FTP_USER = config("SANMAR_FTP_USER")
+SANMAR_FTP_PASSWORD = config("SANMAR_FTP_PASSWORD")
