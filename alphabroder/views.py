@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Min, Max, F, Value
+from django.db.models.functions import Coalesce
 from .sync import UpdateALPDB
 from .models import Products, Category
 from .serializers import (
@@ -64,6 +66,13 @@ class ProductsListView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())  # Apply search filter
+        queryset = queryset.annotate(
+            min_price=Coalesce(Min('variations__retail_price'), Value(None)),
+            max_price=Coalesce(Max('variations__retail_price'), Value(None))
+        )
+
+        # Exclude products with null price ranges
+        queryset = queryset.exclude(min_price=None, max_price=None)
 
         # Paginate the queryset
         page = self.paginate_queryset(queryset)
